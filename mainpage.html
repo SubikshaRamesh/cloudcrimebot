@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crime Intelligence Analytics | Law Enforcement Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: #0a0e1a;
+            color: #ffffff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #0a0e1a, #1a1f2e, #2d3748);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            background: rgba(100, 200, 255, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: rgba(15, 23, 40, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(100, 200, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .navbar:hover {
+            border-color: rgba(100, 200, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(100, 200, 255, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #64c8ff;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #64c8ff, #3b82f6);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .nav-status {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #a0aec0;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Header Section */
+        .header {
+            background: rgba(15, 23, 40, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(100, 200, 255, 0.2);
+            border-radius: 24px;
+            padding: 60px 40px;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(100, 200, 255, 0.1), transparent);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #64c8ff, #ffffff, #3b82f6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            color: #a0aec0;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(100, 200, 255, 0.1);
+            border: 1px solid rgba(100, 200, 255, 0.3);
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            color: #64c8ff;
+            margin-bottom: 20px;
+        }
+
+        /* Authentication Section */
+        .auth-section {
+            background: rgba(15, 23, 40, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(100, 200, 255, 0.2);
+            border-radius: 20px;
+            padding: 50px;
+            margin-bottom: 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #64c8ff, transparent);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .auth-section h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+
+        .auth-section p {
+            font-size: 1.1rem;
+            color: #a0aec0;
+            margin-bottom: 40px;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .auth-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 18px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            min-width: 180px;
+            min-height: 60px;
+        }
+
+        .signin-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .auth-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .auth-btn:hover::before {
+            left: 100%;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-icon {
+            font-size: 1.3rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .stat-card {
+            background: rgba(15, 23, 40, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(100, 200, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #64c8ff, #3b82f6, #10b981);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .stat-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(100, 200, 255, 0.4);
+            box-shadow: 0 20px 40px rgba(100, 200, 255, 0.1);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #64c8ff, #3b82f6);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover .stat-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .stat-number {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #64c8ff;
+            margin-bottom: 8px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: #a0aec0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        .stat-change {
+            font-size: 0.8rem;
+            color: #10b981;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        /* Charts Section */
+        .charts-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .chart-container {
+            background: rgba(15, 23, 40, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(100, 200, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .chart-container:hover {
+            border-color: rgba(100, 200, 255, 0.3);
+            box-shadow: 0 12px 32px rgba(100, 200, 255, 0.1);
+        }
+
+        .chart-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .chart {
+            height: 320px;
+            background: rgba(10, 14, 26, 0.5);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: end;
+            justify-content: space-around;
+            height: 280px;
+            padding: 30px;
+            gap: 15px;
+        }
+
+        .bar {
+            width: 45px;
+            background: linear-gradient(to top, #3b82f6, #64c8ff);
+            border-radius: 6px 6px 0 0;
+            position: relative;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .bar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(100, 200, 255, 0.4);
+        }
+
+        .bar::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: #a0aec0;
+            white-space: nowrap;
+        }
+
+        .bar::before {
+            content: attr(data-value);
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: #64c8ff;
+            font-weight: 600;
+        }
+
+        .pie-chart {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #3b82f6 0deg 130deg,
+                #10b981 130deg 220deg,
+                #f59e0b 220deg 300deg,
+                #ef4444 300deg 360deg
+            );
+            position: relative;
+            animation: pieRotate 3s ease-in-out;
+            box-shadow: 0 8px 32px rgba(100, 200, 255, 0.2);
+        }
+
+        @keyframes pieRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .pie-chart::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            background: rgba(15, 23, 40, 0.9);
+            border-radius: 50%;
+            border: 2px solid rgba(100, 200, 255, 0.3);
+        }
+
+        /* Action Buttons */
+        .action-section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .action-btn {
+            background: rgba(15, 23, 40, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(100, 200, 255, 0.1);
+            border-radius: 16px;
+            padding: 25px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            min-height: 80px;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(100, 200, 255, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .action-btn:hover::before {
+            left: 100%;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-5px);
+            border-color: rgba(100, 200, 255, 0.4);
+            box-shadow: 0 15px 35px rgba(100, 200, 255, 0.2);
+        }
+
+        /* Alerts Section */
+        .alerts-section {
+            background: rgba(15, 23, 40, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .alerts-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 25px;
+        }
+
+        .alert-item {
+            background: rgba(10, 14, 26, 0.6);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-left: 4px solid #ef4444;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .alert-item:hover {
+            border-color: rgba(239, 68, 68, 0.4);
+            transform: translateX(8px);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.1);
+        }
+
+        .alert-time {
+            font-size: 0.8rem;
+            color: #64c8ff;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .alert-text {
+            font-weight: 500;
+            color: #e2e8f0;
+            line-height: 1.5;
+        }
+
+        .alert-priority {
+            display: inline-block;
+            background: #ef4444;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-left: 10px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header {
+                padding: 40px 25px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .auth-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <div class="container">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="logo">
+                <div class="logo-icon">🔒</div>
+                Crime Intelligence Analytics
+            </div>
+            <div class="nav-status">
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    System Online
+                </div>
+                <div class="status-indicator">
+                    <span>🌐</span>
+                    Connected
+                </div>
+            </div>
+        </nav>
+
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-badge">
+                    <span>🔐</span>
+                    Secure Law Enforcement Platform
+                </div>
+                <h1>Advanced Crime Analysis System</h1>
+                <p>Intelligent pattern recognition and modus operandi analysis for modern law enforcement agencies. Secure, fast, and comprehensive crime data insights.</p>
+            </div>
+        </header>
+
+        <!-- Authentication Section -->
+        <section class="auth-section">
+            <h3>🛡️ Secure Access Portal</h3>
+            <p>Authorized Personnel Only - Multi-factor authentication required</p>
+            <div class="auth-buttons">
+                <button class="auth-btn signin-btn" onclick="goToSignIn()">
+                    <span class="btn-icon">👤</span>
+                    New User Sign Up
+                </button>
+                <button class="auth-btn login-btn" onclick="goToLogin()">
+                    <span class="btn-icon">🔐</span>
+                    Officer Login
+                </button>
+            </div>
+        </section>
+    <script>
+        function goToSignIn() {
+            window.location.href = "signup.html";
+        }
+        function goToLogin() {
+            window.location.href = "login.html";
+        }
+        
+    </script>
+    </script>
+
+    
+
+        <!-- Statistics Grid -->
+        <section class="stats-grid">
+            <div class="stat-card" onclick="showDetails('total')">
+                <div class="stat-icon">📊</div>
+                <div class="stat-number" id="totalCrimes">0</div>
+                <div class="stat-label">Total Cases</div>
+                <div class="stat-change">↗ +12% this month</div>
+            </div>
+            <div class="stat-card" onclick="showDetails('active')">
+                <div class="stat-icon">⚡</div>
+                <div class="stat-number" id="activeCases">0</div>
+                <div class="stat-label">Active Investigations</div>
+                <div class="stat-change">↗ +5% this week</div>
+            </div>
+            <div class="stat-card" onclick="showDetails('solved')">
+                <div class="stat-icon">✅</div>
+                <div class="stat-number" id="solvedCases">0</div>
+                <div class="stat-label">Cases Solved</div>
+                <div class="stat-change">↗ +8% this month</div>
+            </div>
+            <div class="stat-card" onclick="showDetails('patterns')">
+                <div class="stat-icon">🔍</div>
+                <div class="stat-number" id="patterns">0</div>
+                <div class="stat-label">MO Patterns</div>
+                <div class="stat-change">↗ +15% detected</div>
+            </div>
+            <div class="stat-card" onclick="showDetails('suspects')">
+                <div class="stat-icon">👥</div>
+                <div class="stat-number" id="suspects">0</div>
+                <div class="stat-label">Suspect Profiles</div>
+                <div class="stat-change">↗ +3% updated</div>
+            </div>
+            <div class="stat-card" onclick="showDetails('alerts')">
+                <div class="stat-icon">🚨</div>
+                <div class="stat-number" id="alerts">0</div>
+                <div class="stat-label">Priority Alerts</div>
+                <div class="stat-change">⚠️ Requires attention</div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts-section">
+            <div class="chart-container">
+                <div class="chart-title">📈 Crime Distribution Analysis</div>
+                <div class="chart bar-chart">
+                    <div class="bar" style="height: 85%;" data-label="Burglary" data-value="284"></div>
+                    <div class="bar" style="height: 70%;" data-label="Theft" data-value="198"></div>
+                    <div class="bar" style="height: 50%;" data-label="Assault" data-value="142"></div>
+                    <div class="bar" style="height: 95%;" data-label="Fraud" data-value="312"></div>
+                    <div class="bar" style="height: 40%;" data-label="Drug" data-value="98"></div>
+                    <div class="bar" style="height: 60%;" data-label="Vehicle" data-value="167"></div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">🎯 Case Status Overview</div>
+                <div class="chart">
+                    <div class="pie-chart"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Action Buttons -->
+        <section class="action-section">
+            <h2 class="section-title">🎛️ System Modules</h2>
+            <div class="action-grid">
+                <button class="action-btn" onclick="navigateTo('map')">
+                    <span>🗺️</span>
+                    Crime Mapping
+                </button>
+                <button class="action-btn" onclick="navigateTo('analysis')">
+                    <span>📊</span>
+                    Pattern Analysis
+                </button>
+                <button class="action-btn" onclick="navigateTo('reports')">
+                    <span>📋</span>
+                    Generate Reports
+                </button>
+                <button class="action-btn" onclick="navigateTo('database')">
+                    <span>🗄️</span>
+                    Case Database
+                </button>
+                <button class="action-btn" onclick="navigateTo('surveillance')">
+                    <span>📹</span>
+                    Surveillance Hub
+                </button>
+                <button class="action-btn" onclick="navigateTo('intelligence')">
+                    <span>🧠</span>
+                    AI Intelligence
+                </button>
+            </div>
+        </section>
+
+        <!-- Alerts Section -->
+        <section class="alerts-section">
+            <h3 class="alerts-title">
+                <span>🚨</span>
+                Real-time Intelligence Alerts
+            </h3>
+            <div class="alert-item" onclick="viewAlert(1)">
+                <div class="alert-time">🕐 2 hours ago</div>
+                <div class="alert-text">
+                    Pattern match detected: Similar MO in 3 recent burglary cases
+                    <span class="alert-priority">High</span>
+                </div>
+            </div>
+            <div class="alert-item" onclick="viewAlert(2)">
+                <div class="alert-time">🕐 4 hours ago</div>
+                <div class="alert-text">
+                    New suspect profile generated from vehicle theft pattern analysis
+                    <span class="alert-priority">Medium</span>
+                </div>
+            </div>
+            <div class="alert-item" onclick="viewAlert(3)">
+                <div class="alert-time">🕐 1 day ago</div>
+                <div class="alert-text">
+                    Cross-jurisdictional fraud pattern: 7 related cases identified
+                    <span class="alert-priority">High</span>
+                </div>
+            </div>
+            <div class="alert-item" onclick="viewAlert(4)">
+                <div class="alert-time">🕐 2 days ago</div>
+                <div class="alert-text">
+                    Geographic cluster: Unusual activity concentration in District 5
+                    <span class="alert-priority">Medium</span>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 6 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                document.querySelector('.bg-animation').appendChild(particle);
+            }
+        }
+
+        // Animate numbers with typewriter effect
+        function animateNumber(element, target, duration = 2000) {
+            let current = 0;
+            const increment = target / (duration / 16);
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current).toLocaleString();
+            }, 16);
+        }
+
+        // Initialize animations
+        window.addEventListener('load', () => {
+            createParticles();
+            
+            // Animate statistics with staggered delays
+            setTimeout(() => animateNumber(document.getElementById('totalCrimes'), 3247), 500);
+            setTimeout(() => animateNumber(document.getElementById('activeCases'), 189), 700);
+            setTimeout(() => animateNumber(document.getElementById('solvedCases'), 2834), 900);
+setTimeout(() => animateNumber(document.getElementById('suspects'), 412), 1300);
+setTimeout(() => animateNumber(document.getElementById('alerts'), 6), 1500);
+});
+
+

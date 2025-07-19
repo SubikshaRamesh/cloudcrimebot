@@ -1,0 +1,53 @@
+{
+  "metadata": {
+    "dataset_name": "Tamil Nadu Crime Records",
+    "description": "Crime incidents across Tamil Nadu with detailed information for AI assistance",
+    "total_records": 200,
+    "date_range": "2022-2025",
+    "locations": ["Chennai", "Coimbatore", "Madurai", "Salem", "Tiruchirappalli"]
+  },
+  "records": [
+    {
+      "id": "TN_CRIME_001",
+      "crime_type": "Robbery",
+      "accused_name": "Mrs. Diane Reyes",
+      "location": "Madurai",
+      "date": "2024-08-09",
+      "year": 2024,
+      "month": "August",
+      "modus_operandi": "Accused used a weapon to threaten victims and steal valuables",
+      "crime_category": "Violent Crime",
+      "severity": "High",
+      "search_keywords": ["robbery", "weapon", "threat", "steal", "valuables", "Madurai"],
+      "summary": "Robbery case in Madurai involving weapon threats by Mrs. Diane Reyes on August 9, 2024"
+    },
+    {
+      "id": "TN_CRIME_002",
+      "crime_type": "Fraud",
+      "accused_name": "Christopher Gonzalez",
+      "location": "Tirunelveli",
+      "date": "2025-06-01",
+      "year": 2025,
+      "month": "June",
+      "modus_operandi": "Accused created fake documents to obtain loans under false identity",
+      "crime_category": "Financial Crime",
+      "severity": "Medium",
+      "search_keywords": ["fraud", "fake documents", "loans", "false identity", "Tirunelveli"],
+      "summary": "Financial fraud case in Tirunelveli involving fake document creation by Christopher Gonzalez on June 1, 2025"
+    },
+    {
+      "id": "TN_CRIME_003",
+      "crime_type": "Kidnapping",
+      "accused_name": "David Davidson",
+      "location": "Tiruppur",
+      "date": "2024-09-01",
+      "year": 2024,
+      "month": "September",
+      "modus_operandi": "Accused abducted victim and demanded ransom through anonymous calls",
+      "crime_category": "Violent Crime",
+      "severity": "High",
+      "search_keywords": ["kidnapping", "abduction", "ransom", "anonymous calls", "Tiruppur"],
+      "summary": "Kidnapping case in Tiruppur with ransom demands by David Davidson on September 1, 2024"
+    }
+  ]
+}

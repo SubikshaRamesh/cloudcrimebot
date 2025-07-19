@@ -1,0 +1,6 @@
+Crime Type,Police Station,Gender,Age,Crime Date,Crime Time,Report DateTime,Location,Tools Used,Target Type,Entry Technique,Exit Technique
+Theft,Chennai Central,Male,32,2024-04-10,22:45,2024-04-10T23:10,Zoo Road near Bus Stop,Lockpicking Tools,Retail Store,Lock Picking,Same as Entry
+Assault,Trichy West,Female,27,2024-05-02,19:30,2024-05-02T20:00,Near Gandhi Park,Bladed Weapons,Individual Person,Forced Entry,Normal Exit
+Burglary,Salem North,Male,45,2024-06-15,02:10,2024-06-15T03:00,123 MG Street,Firearms,Residential Property,Roof Access,Emergency Exit
+Robbery,Madurai City,Female,29,2024-03-20,17:50,2024-03-20T18:30,Nehru Nagar Subway,Vehicles,Government Facility,Electronic Bypass,Same as Entry
+Cybercrime,Coimbatore South,Other,22,2024-02-11,13:00,2024-02-11T13:15,Online from unknown IP,Electronic Tools,Individual Person,No Entry Required,No Entry Required

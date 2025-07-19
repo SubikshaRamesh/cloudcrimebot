@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modus Operandi Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1d29 0%, #2d3748 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(26, 32, 44, 0.95);
+            border-radius: 16px;
+            border: 1px solid rgba(74, 85, 104, 0.3);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            padding: 40px;
+            text-align: center;
+            border-bottom: 1px solid rgba(74, 85, 104, 0.3);
+        }
+
+        .header-icon {
+            width: 60px;
+            height: 60px;
+            background: #e53e3e;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(229, 62, 62, 0.3);
+        }
+
+        .header-icon::before {
+            content: "🔍";
+            font-size: 24px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffffff, #cbd5e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #a0aec0;
+            font-size: 1.1rem;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+        }
+
+        .required {
+            color: #e53e3e;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(45, 55, 72, 0.8);
+            border: 2px solid rgba(74, 85, 104, 0.5);
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #e53e3e;
+            box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+            background: rgba(45, 55, 72, 0.95);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-help {
+            font-size: 0.85rem;
+            color: #a0aec0;
+            margin-top: 5px;
+        }
+
+        .datetime-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .datetime-group .form-input {
+            flex: 1;
+        }
+
+        .readonly-field {
+            background: rgba(74, 85, 104, 0.3);
+            border-color: rgba(74, 85, 104, 0.3);
+            cursor: not-allowed;
+        }
+
+        .submit-section {
+            padding-top: 30px;
+            border-top: 1px solid rgba(74, 85, 104, 0.3);
+            text-align: center;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #e53e3e, #c53030);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(229, 62, 62, 0.3);
+            margin-right: 15px;
+        }
+
+        .back-btn {
+            background: rgba(74, 85, 104, 0.8);
+            color: #e2e8f0;
+            border: 2px solid rgba(74, 85, 104, 0.5);
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            background: rgba(74, 85, 104, 1);
+            border-color: rgba(113, 128, 150, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(74, 85, 104, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(229, 62, 62, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .datetime-group {
+                flex-direction: column;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                margin: 10px;
+            }
+
+            .submit-section {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .submit-btn, .back-btn {
+                margin: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-icon"></div>
+            <h1>Modus Operandi Analysis</h1>
+            <p>Secure Operational Method Documentation Portal</p>
+        </div>
+        
+        <div class="form-container">
+            <form id="modusForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Tools/Weapons Used <span class="required">*</span></label>
+                        <select class="form-select" id="toolsWeapons" required>
+                            <option value="">Select Tools/Weapons</option>
+                            <option value="firearms">Firearms</option>
+                            <option value="bladed-weapons">Bladed Weapons</option>
+                            <option value="blunt-objects">Blunt Objects</option>
+                            <option value="electronic-tools">Electronic Tools</option>
+                            <option value="lockpicking-tools">Lockpicking Tools</option>
+                            <option value="cutting-tools">Cutting Tools</option>
+                            <option value="vehicles">Vehicles</option>
+                            <option value="improvised-weapons">Improvised Weapons</option>
+                            <option value="chemicals">Chemicals/Substances</option>
+                            <option value="none-apparent">None Apparent</option>
+                            <option value="unknown">Unknown</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <div class="form-help">Select the primary tools or weapons used in the operation</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Target Type <span class="required">*</span></label>
+                        <select class="form-select" id="targetType" required>
+                            <option value="">Select Target Type</option>
+                            <option value="residential">Residential Property</option>
+                            <option value="commercial">Commercial Establishment</option>
+                            <option value="financial">Financial Institution</option>
+                            <option value="government">Government Facility</option>
+                            <option value="educational">Educational Institution</option>
+                            <option value="healthcare">Healthcare Facility</option>
+                            <option value="transportation">Transportation Hub</option>
+                            <option value="retail">Retail Store</option>
+                            <option value="industrial">Industrial Site</option>
+                            <option value="individual">Individual Person</option>
+                            <option value="vehicle">Vehicle</option>
+                            <option value="public-space">Public Space</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <div class="form-help">Specify the type of target involved</div>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Entry Technique <span class="required">*</span></label>
+                        <select class="form-select" id="entryTechnique" required>
+                            <option value="">Select Entry Method</option>
+                            <option value="forced-entry">Forced Entry</option>
+                            <option value="lock-picking">Lock Picking</option>
+                            <option value="key-access">Key/Authorized Access</option>
+                            <option value="window-breach">Window Breach</option>
+                            <option value="door-breach">Door Breach</option>
+                            <option value="roof-access">Roof Access</option>
+                            <option value="underground-access">Underground Access</option>
+                            <option value="social-engineering">Social Engineering</option>
+                            <option value="electronic-bypass">Electronic Bypass</option>
+                            <option value="no-entry-required">No Entry Required</option>
+                            <option value="unknown">Unknown</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <div class="form-help">Method used to gain access to the target</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Exit Technique <span class="required">*</span></label>
+                        <select class="form-select" id="exitTechnique" required>
+                            <option value="">Select Exit Method</option>
+                            <option value="same-as-entry">Same as Entry</option>
+                            <option value="normal-exit">Normal Exit</option>
+                            <option value="emergency-exit">Emergency Exit</option>
+                            <option value="window-exit">Window Exit</option>
+                            <option value="rear-exit">Rear Exit</option>
+                            <option value="vehicle-escape">Vehicle Escape</option>
+                            <option value="on-foot">On Foot</option>
+                            <option value="concealed-exit">Concealed Exit</option>
+                            <option value="blended-crowd">Blended with Crowd</option>
+                            <option value="still-present">Still Present</option>
+                            <option value="unknown">Unknown</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <div class="form-help">Method used to leave the scene</div>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Time Preference <span class="required">*</span></label>
+                        <select class="form-select" id="timePreference" required>
+                            <option value="">Select Time Preference</option>
+                            <option value="early-morning">Early Morning (4:00-8:00 AM)</option>
+                            <option value="morning">Morning (8:00 AM-12:00 PM)</option>
+                            <option value="afternoon">Afternoon (12:00-5:00 PM)</option>
+                            <option value="evening">Evening (5:00-9:00 PM)</option>
+                            <option value="night">Night (9:00 PM-12:00 AM)</option>
+                            <option value="late-night">Late Night (12:00-4:00 AM)</option>
+                            <option value="weekdays">Weekdays Preferred</option>
+                            <option value="weekends">Weekends Preferred</option>
+                            <option value="holidays">Holidays Preferred</option>
+                            <option value="no-pattern">No Pattern Observed</option>
+                            <option value="opportunistic">Opportunistic</option>
+                        </select>
+                        <div class="form-help">Preferred timing for the operation</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Analysis Date & Time</label>
+                        <input type="text" class="form-input readonly-field" value="07-06-2025 10:17 AM" readonly>
+                        <div class="form-help">Automatically set to current date and time</div>
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label class="form-label">Operational Details <span class="required">*</span></label>
+                    <textarea class="form-textarea" id="operationalDetails" placeholder="Enter detailed description of the modus operandi, behavioral patterns, and any distinctive operational characteristics..." required></textarea>
+                    <div class="form-help">Provide comprehensive details about the operational methodology, patterns, and unique characteristics</div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label class="form-label">Additional Notes</label>
+                    <textarea class="form-textarea" id="additionalNotes" placeholder="Any additional observations, witness statements, or investigative notes..."></textarea>
+                    <div class="form-help">Optional field for supplementary information and observations</div>
+                </div>
+
+                <div class="submit-section">
+                    <button type="submit" class="submit-btn">Submit Analysis</button>
+                    <a href="mainpage.html" class="back-btn">Back to Main</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('modusForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect form data
+            const formData = {
+                toolsWeapons: document.getElementById('toolsWeapons').value,
+                targetType: document.getElementById('targetType').value,
+                entryTechnique: document.getElementById('entryTechnique').value,
+                exitTechnique: document.getElementById('exitTechnique').value,
+                timePreference: document.getElementById('timePreference').value,
+                operationalDetails: document.getElementById('operationalDetails').value,
+                additionalNotes: document.getElementById('additionalNotes').value,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Validate required fields
+            const requiredFields = ['toolsWeapons', 'targetType', 'entryTechnique', 'exitTechnique', 'timePreference', 'operationalDetails'];
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                const element = document.getElementById(field);
+                if (!element.value.trim()) {
+                    isValid = false;
+                    element.style.borderColor = '#e53e3e';
+                } else {
+                    element.style.borderColor = 'rgba(74, 85, 104, 0.5)';
+                }
+            });
+            
+            if (isValid) {
+                // Simulate form submission
+                alert('Modus Operandi analysis submitted successfully!\n\nData collected:\n' + 
+                      'Tools/Weapons: ' + formData.toolsWeapons + '\n' +
+                      'Target Type: ' + formData.targetType + '\n' +
+                      'Entry: ' + formData.entryTechnique + '\n' +
+                      'Exit: ' + formData.exitTechnique + '\n' +
+                      'Time Preference: ' + formData.timePreference);
+                
+                // Reset form
+                this.reset();
+            } else {
+                alert('Please fill in all required fields.');
+            }
+        });
+
+        // Real-time validation
+        document.querySelectorAll('input[required], select[required], textarea[required]').forEach(element => {
+            element.addEventListener('blur', function() {
+                if (this.value.trim()) {
+                    this.style.borderColor = 'rgba(74, 85, 104, 0.5)';
+                } else {
+                    this.style.borderColor = '#e53e3e';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
